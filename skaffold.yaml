@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: true
+  artifacts:
+    - image: alexandersarson/auth
+      context: auth
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: alexandersarson/client
+      context: client
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
+    - image: alexandersarson/tickets
+      context: tickets
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: alexandersarson/orders
+      context: orders
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: alexandersarson/expiration
+      context: expiration
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: alexandersarson/payments
+      context: payments
+      custom:
+        buildCommand: ./custom-build.sh
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
